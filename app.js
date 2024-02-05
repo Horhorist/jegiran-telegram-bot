@@ -1,11 +1,11 @@
 const TelegramBot = require('node-telegram-bot-api');
 const request = require('request');
 const translate = require('translate-google');
+const apiKey = 'api-ninjas key'; 
+const botToken = 'token'; 
 
-const apiKey = 'WW097+qJGunVDKZP7nECXw==nXafMLCSUtBBVeKU'; 
-const botToken = '6686880437:AAEbrLvuOIDb_84V1XCkg5VRuHyRaK3nfCs'; 
+
 console.log('Bot dixebite'); 
-
 const bot = new TelegramBot(botToken, { polling: true });
 
 const categories = [
@@ -17,51 +17,30 @@ const categories = [
   'imagination', 'inspirational', 'intelligence', 'jealousy', 'knowledge', 'leadership', 'learning', 'legal',
   'life', 'love', 'marriage', 'medical', 'men', 'mom', 'money', 'morning', 'movies', 'success'
 ];
-
-
+const startPngUrl = "https://i.pinimg.com/564x/86/f3/62/86f36292ea0e69d8b461a5b8b160c8be.jpg";
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-  const aboutText = "Slav! Ez boteke ji aliye @horhorik vê ji bo jêgiranan ku bi wergera kurdî hatime avakirin.Ez dikarim gotinên îlhamê pêşkêşî we bikim. \n\n Hûn dikarin fermanên jêrîn bikar bînin: \n\n/vebir: ji bo lîsteya vebiran. \n/{VebiraKuTuHilbijart}: jêgirana ku hûn dixwazin.\n\nMînakek: /love an jî /art";
+  const aboutText = "Slav! Ez boteke ji aliye @horhorîk vê ji bo jêgiranan ku bi wergera kurdî hatime avakirin. Ez dikarim gotinên îlhamê pêşkêşî we bikim. Hûn dikarin fermanên jêrîn bikar bînin:\n\n" +
+                    "/vebir - Ji bo lîsteya vebiran\n" +
+                    "/{vebir} - jêgiranan ku bi kategoriyekî diyarî bistînin\n\n" +
+                    "Github: " + " [Çavkaniya Azad](https://github.com/horhorist/jegiran-telegram-bot)";
 
-  
-  const keyboard = {
-    reply_markup: {
-      inline_keyboard: [
-        [
-          { text: 'Tirşik', url: 'https://tirsik.net/niviskar.php?trskvn=1394301618&m=kiye' },
-          { text: 'github', url: 'https://github.com/Horhorist/jegiran-telegram-bot' }
-        ]
-      ]
-    }
-  };
-  bot.sendMessage(chatId, aboutText, keyboard);
+  bot.sendPhoto(chatId, startPngUrl, { caption: aboutText, parse_mode: "Markdown" });
+
 });
-
-bot.on('callback_query', (callbackQuery) => {
-  const chatId = callbackQuery.message.chat.id;
-  const data = callbackQuery.data;
-});
-
-
-
 bot.onText(/\/vebir/, (msg) => {
   const chatId = msg.chat.id;
-
   const categoriesList = categories.join('\n');
   const message = `<b>Vebirên ku dikarin werin hilbijartin:</b>\n${categoriesList}`;
-
-  bot.sendMessage(chatId, message, keyboard, { parse_mode: 'HTML' });
+  bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
 });
-
 bot.onText(/\/(\w+)/, (msg, match) => {
   const chatId = msg.chat.id;
   const category = match[1].toLowerCase();
-
   if (!categories.includes(category) && category !== 'start' && category !== 'vebir') {
     bot.sendMessage(chatId, 'Te fermanekî nederbasdar daxwaz kir.');
     return;
   }
-
   request.get({
     url: 'https://api.api-ninjas.com/v1/quotes?category=' + category,
     headers: {
@@ -72,7 +51,6 @@ bot.onText(/\/(\w+)/, (msg, match) => {
     else if (response.statusCode != 200) return bot.sendMessage(chatId, 'Hata: ' + response.statusCode);
     else {
       const quote = JSON.parse(body);
-
       if (quote[0] && quote[0].quote) {
         const originalText = quote[0].quote;
         const translationMessage = await bot.sendMessage(chatId, 'Jêgiran tê wergerandin...');
@@ -87,7 +65,6 @@ bot.onText(/\/(\w+)/, (msg, match) => {
     }
   });
 });
-
 bot.on('polling_error', (error) => {
   console.error('Polling error:', error);
 });
