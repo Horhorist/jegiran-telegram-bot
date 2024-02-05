@@ -25,7 +25,7 @@ bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
   const aboutText = "Slav! Ez boteke ji aliye @horhorîk vê ji bo jêgiranan ku bi wergera kurdî hatime avakirin. Ez dikarim gotinên îlhamê pêşkêşî we bikim. Hûn dikarin fermanên jêrîn bikar bînin:\n\n" +
                     "/vebir - Ji bo lîsteya vebiran\n" +
-                    "/{vebir} - jêgiranan ku bi kategoriyekî diyarî bistînin\n\n" +
+                    "/{vebir} - jêgiranan ku bi kategoriyekî diyarî bistînin. Mînakek: /art\n\n" +
                     "Github: " + " [Çavkaniya Azad](https://github.com/horhorist/jegiran-telegram-bot)";
 
   bot.sendPhoto(chatId, startPngUrl, { caption: aboutText, parse_mode: "Markdown" });
