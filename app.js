@@ -1,8 +1,9 @@
 const TelegramBot = require('node-telegram-bot-api');
 const request = require('request');
 const translate = require('translate-google');
+
 const apiKey = 'api-ninjas key'; 
-const botToken = 'token'; 
+const botToken = 'bot token';
 
 
 console.log('Bot dixebite'); 
@@ -17,17 +18,26 @@ const categories = [
   'imagination', 'inspirational', 'intelligence', 'jealousy', 'knowledge', 'leadership', 'learning', 'legal',
   'life', 'love', 'marriage', 'medical', 'men', 'mom', 'money', 'morning', 'movies', 'success'
 ];
-const startPngUrl = "https://i.pinimg.com/564x/86/f3/62/86f36292ea0e69d8b461a5b8b160c8be.jpg";
+
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
-  const aboutText = "Slav! Ez boteke ji aliye @horhorîk vê ji bo jêgiranan ku bi wergera kurdî hatime avakirin. Ez dikarim gotinên îlhamê pêşkêşî we bikim. Hûn dikarin fermanên jêrîn bikar bînin:\n\n" +
-                    "/vebir - Ji bo lîsteya vebiran\n" +
-                    "/{vebir} - jêgiranan ku bi kategoriyekî diyarî bistînin\n\n" +
-                    "Github: " + " [Çavkaniya Azad](https://github.com/horhorist/jegiran-telegram-bot)";
+  const aboutText = "Slav😊! Ez botekî ji aliye @horhorikk vê hatiye afirandin ku dikare jêgiranên bi kurdî ji bo we bîne😃. Ji kerema xwe vebirên ku dixwazin hilbijêrin.\n\n❤ Ji bo vebirên ku dikarin werin hilbijartin, /vebir ferman bike.\n💛 Ji bo alîkarî, /start ferman bike. \n💚 Ji bo jêgiran jî, /{vebir} ferman bike. Mînakek: /love";
 
-  bot.sendPhoto(chatId, startPngUrl, { caption: aboutText, parse_mode: "Markdown" });
+  const keyboard = {
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: 'github', url: 'https://github.com/Horhorist/jegiran-telegram-bot' },
+          { text: 'tirşik', url: 'https://tirsik.net/xerhati.php' }
+        ]
+      ]
+    }
+  };
 
+  bot.sendMessage(chatId, aboutText, keyboard);
 });
+
+
 bot.onText(/\/vebir/, (msg) => {
   const chatId = msg.chat.id;
   const categoriesList = categories.join('\n');
